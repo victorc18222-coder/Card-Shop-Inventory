@@ -68,3 +68,45 @@ public class InventoryManager {
         }
         return results;
     }
+     public List<Card> getAll() {
+        return new ArrayList<>(cards);
+    }
+
+    public List<Card> lowStock(int threshold) {
+        ArrayList<Card> results = new ArrayList<>();
+        for (Card c : cards) {
+            if (c.getQuantity() <= threshold) {
+                results.add(c);
+            }
+        }
+        return results;
+    }
+
+    public void sortByName(List<Card> list) {
+        list.sort(Comparator.comparing(Card::getName, String.CASE_INSENSITIVE_ORDER));
+    }
+
+    public void sortByQuantity(List<Card> list) {
+        list.sort(Comparator.comparingInt(Card::getQuantity).reversed());
+    }
+
+    public void sortByPrice(List<Card> list) {
+        list.sort(Comparator.comparingDouble(Card::getPrice).reversed());
+    }
+
+    public void clearAndLoad(List<Card> loaded) {
+        cards.clear();
+        cards.addAll(loaded);
+    }
+
+    // NEW: filter section (Pokemon / Sports)
+    public List<Card> filterByCategory(String category) {
+        ArrayList<Card> results = new ArrayList<>();
+        for (Card c : cards) {
+            if (c.getCategory().equalsIgnoreCase(category)) {
+                results.add(c);
+            }
+        }
+        return results;
+    }
+}
