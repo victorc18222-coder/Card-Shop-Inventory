@@ -37,3 +37,72 @@ public class App {
                 case "1" -> addCard(sc, inventory);
                 case "2" -> updateQuantity(sc, inventory);
                 case "3" -> removeCard(sc, inventory);
+                case "4" -> search(sc, inventory);
+                case "5" -> viewAll(sc, inventory);
+                case "6" -> viewCategory(sc, inventory, "Pokemon");
+                case "7" -> viewCategory(sc, inventory, "Sports");
+                case "8" -> lowStock(sc, inventory);
+                case "9" -> {
+                    saveInventory(inventory);
+                    running = false;
+                }
+                default -> System.out.println("Invalid option.");
+            }
+        }
+    }
+
+    private static void addCard(Scanner sc, InventoryManager inv) {
+        System.out.print("Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Set: ");
+        String set = sc.nextLine();
+
+        System.out.println("Category: 1) Pokemon  2) Sports  3) Other");
+        String cChoice = sc.nextLine().trim();
+        String category;
+        if (cChoice.equals("1")) category = "Pokemon";
+        else if (cChoice.equals("2")) category = "Sports";
+        else category = "Other";
+
+        System.out.print("Price: ");
+        double price = readDouble(sc);
+
+        System.out.print("Quantity: ");
+        int qty = readInt(sc);
+
+        String id = inv.generateId();
+        inv.addCard(new Card(id, name, set, category, price, qty));
+        System.out.println("Added card " + id);
+    }
+
+    private static void updateQuantity(Scanner sc, InventoryManager inv) {
+        System.out.print("Card ID: ");
+        String id = sc.nextLine().trim();
+
+        Card c = inv.findById(id);
+        if (c == null) {
+            System.out.println("Card not found.");
+            return;
+        }
+
+        System.out.println("Found: " + c);
+        System.out.print("New quantity: ");
+        int qty = readInt(sc);
+
+        if (qty < 0) {
+            System.out.println("Quantity can't be negative.");
+            return;
+        }
+
+        inv.updateQuantity(id, qty);
+        System.out.println("Updated.");
+    }
+
+    private static void removeCard(Scanner sc, InventoryManager inv) {
+        System.out.print("Card ID: ");
+        String id = sc.nextLine().trim();
+
+        if (inv.removeById(id)) System.out.println("Removed.");
+        else System.out.println("Card not found.");
+    }
