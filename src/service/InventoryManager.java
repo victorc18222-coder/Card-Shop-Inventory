@@ -68,7 +68,8 @@ public class InventoryManager {
         }
         return results;
     }
-     public List<Card> getAll() {
+    
+    public List<Card> getAll() {
         return new ArrayList<>(cards);
     }
 
